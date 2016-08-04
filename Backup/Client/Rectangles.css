@@ -1,0 +1,29 @@
+﻿
+#Canvas {
+    height:500px;
+    width:500px;
+    position:relative;
+    background:transparent url(../Image/one.jpg) repeat;
+    border-left:1px solid #1e90ff;
+    border-top:1px solid #1e90ff;
+}
+
+#rectangleOne {
+    height:100px;
+    width:100px;
+    background-color:rgb(104, 142, 38);
+    position:absolute;
+    top:50px;
+    left:50px;
+    opacity: 0.75;
+}
+
+#rectangleTwo {
+    height:110px;
+    width:150px;
+    background-color:rgb(161, 7, 2);
+    position:absolute;
+    top:200px;
+    left:250px;
+    opacity: 0.75;
+}

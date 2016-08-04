@@ -1,0 +1,159 @@
+﻿
+#Container {
+    background: #fff url(../Image/background.jpg) no-repeat;
+    width: 1000px;
+    height: 666px;
+    margin: auto;
+}
+
+    #Container h1 {
+        background: #fff url(../Image/header.jpg) no-repeat;
+        text-indent: -9999px;
+        height: 100px;
+        margin-bottom: 65px;
+    }
+
+#Canvas {
+    height: 500px;
+    width: 500px;
+    background: transparent url(../Image/one.jpg) repeat;
+    border-left: 1px solid #1e90ff;
+    border-top: 1px solid #1e90ff;
+    float: right;
+    position: relative;
+}
+
+#Controls {
+    font-family: Verdana, Geneva, sans-serif;
+    height: 500px;
+    width: 498px;
+    float: left;
+    position: relative;
+}
+
+    #Controls #Status {
+        padding: 10px;
+        background-color: #fff;
+        height: 300px;
+        width: 400px;
+        margin: auto;
+        position: relative;
+    }
+
+        #Controls #Status h3 {
+            color: #ff216e;
+        }
+
+    #Controls #StatusUpdate {
+        height: 220px;
+        overflow-y: auto;
+    }
+
+    #Controls #Buttons {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+
+#rectangleOne {
+    height: 100px;
+    width: 100px;
+    background: rgb(104, 142, 38) url(../Image/girl.png) center center no-repeat;
+    background-size: contain;
+    position: absolute;
+    opacity: 0.75;
+}
+
+#rectangleTwo {
+    height: 110px;
+    width: 150px;
+    background: rgb(161, 7, 2) url(../Image/man.png) center center no-repeat;
+    background-size: contain;
+    position: absolute;
+    opacity: 0.75;
+}
+
+.btn {
+    box-shadow: 1px 1px 0 rgba(255,255,255,0.5) inset;
+    border-radius: 3px;
+    border: 1px solid;
+    display: inline-block;
+    height: 18px;
+    line-height: 18px;
+    padding: 0 8px;
+    position: relative;
+    font-size: 12px;
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.btn {
+    background-color: #dbdbdb;
+    border-color: #bbb;
+    color: #666;
+}
+
+    .btn:hover,
+    .btn.active {
+        text-shadow: 0 1px 0 #b12f27;
+        background-color: #f64136;
+        border-color: #b12f27;
+    }
+
+    .btn:active {
+        box-shadow: 0 0 5px 3px rgba(0,0,0,0.2) inset;
+    }
+
+    .btn span {
+        color: #f64136;
+    }
+
+    .btn:hover, .btn:hover span,
+    .btn.active, .btn.active span {
+        color: #eeeeee;
+    }
+
+    .btn:active span {
+        color: #b12f27;
+        text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+    }
+
+.manLove {
+    background-image: url(../Image/man_love.png) !important;
+}
+
+.manLeft {
+    background-image: url(../Image/man_left.png) !important;
+}
+
+.manRight {
+    background-image: url(../Image/man_right.png) !important;
+}
+
+.manUp {
+    background-image: url(../Image/man_up.png) !important;
+}
+
+.manDown {
+    background-image: url(../Image/man_down.png) !important;
+}
+
+.girlLove {
+    background-image: url(../Image/girl_love.png) !important;
+}
+
+.girlLeft {
+    background-image: url(../Image/girl_left.png) !important;
+}
+
+.girlRight {
+    background-image: url(../Image/girl_right.png) !important;
+}
+
+.girlUp {
+    background-image: url(../Image/girl_up.png) !important;
+}
+
+.girlDown {
+    background-image: url(../Image/girl_down.png) !important;
+}
