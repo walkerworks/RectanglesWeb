@@ -82,7 +82,6 @@ function HandleDragStop(rectangle) {
     var leftAdjusted = SnapToGridOfTen(position.left);
     var topAdjusted = SnapToGridOfTen(position.top);
     $(rectangle).css({ top: topAdjusted + "px", left: leftAdjusted + "px" });
-    $(rectangle).removeClass();
 
     var rectangleOneView = new RectangleView($('#rectangleOne'));
     var rectangleTwoView = new RectangleView($('#rectangleTwo'));
@@ -176,7 +175,9 @@ function Random(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-
+/* 
+Class for deconstructing a DIV into it's constituent Points along it's four lines
+*/
 function RectangleView(rectangle) {
     this.Rectangle = rectangle;
     this.Position = rectangle.position();
@@ -239,18 +240,46 @@ function RectangleView(rectangle) {
     this.GetRelationship = function (otherRectangle) {
         var status = Relationship.NoRelationship;
         var msg = '';
-        var intersectingPoints = _.intersectionObjects(this.AllPoints, otherRectangle.AllPoints);
 
+        /*
+        Containment is the least expensive to check - so do those first 
+        */
+        var ThisRectangleContainedInOtherRectangle =
+          this.Position.left <= otherRectangle.Position.left &&
+          this.Position.left + this.Rectangle.width() >= otherRectangle.Position.left + otherRectangle.Rectangle.width() &&
+          this.Position.top <= otherRectangle.Position.top &&
+          this.Position.top + this.Rectangle.height() >= otherRectangle.Position.top + otherRectangle.Rectangle.height();
+
+        var OtherRectangleContainedInThisRectangle =
+          otherRectangle.Position.left <= this.Position.left &&
+          otherRectangle.Position.left + otherRectangle.Rectangle.width() >= this.Position.left + this.Rectangle.width() &&
+          otherRectangle.Position.top <= this.Position.top &&
+          otherRectangle.Position.top + otherRectangle.Rectangle.height() >= this.Position.top + this.Rectangle.height();
+
+        if (ThisRectangleContainedInOtherRectangle) {
+            status = Relationship.Contained;
+            msg = this.Name + ' is contained within ' + otherRectangle.Name;
+            return { Relationship: status, Message: msg, Intersections: intersectingPoints };
+        }
+        if (OtherRectangleContainedInThisRectangle) {
+            status = Relationship.Contained;
+            msg = otherRectangle.Name + ' is contained within ' + this.Name;
+            return { Relationship: status, Message: msg, Intersections: intersectingPoints };
+        }
+
+        //If not contained, the next cheapest thing to check is there's any intersection
+        var intersectingPoints = _.intersectionObjects(this.AllPoints, otherRectangle.AllPoints);
+        if (intersectingPoints.length == 0)
+            return { Relationship: status, Message: msg, Intersections: intersectingPoints };
+
+        //If there is some intersection, we need to know if any are *within* the other rectangle
         var anyContainedPoints = false;
         var shared;
-        for(i = 0; i < this.AllPoints.length; i++)
-        {
+        for (i = 0; i < this.AllPoints.length; i++) {
             shared = false;
             //A shared point is not considered *within* for the purposes of this application
-            for (n = 0; n < intersectingPoints.length; n++)
-            {
-                if (intersectingPoints[n].X == this.AllPoints[i].X && intersectingPoints[n].Y == this.AllPoints[i].Y)
-                {
+            for (n = 0; n < intersectingPoints.length; n++) {
+                if (intersectingPoints[n].X == this.AllPoints[i].X && intersectingPoints[n].Y == this.AllPoints[i].Y) {
                     shared = true;
                     break;
                 }
@@ -260,45 +289,14 @@ function RectangleView(rectangle) {
                 break;
             }
         }
+        //Any containment means Intersection, otherwise, they're just adjacent
+        if (anyContainedPoints)
+            status = Relationship.Intersecting;
+        else
+            status = Relationship.Adjacent;
 
-        if(intersectingPoints.length > 0)
-        {
-            if (anyContainedPoints)
-                status = Relationship.Intersecting;
-            else
-                status = Relationship.Adjacent;
-            return {Relationship: status, Message: msg, Intersections: intersectingPoints};
-        }
-
-        var anyContainedPointsInverse = false;
-        for (i = 0; i < otherRectangle.AllPoints.length; i++) {
-            shared = false;
-            //A shared point is not considered *within* for the purposes of this application
-            for (n = 0; n < intersectingPoints.length; n++)
-            {
-                if (intersectingPoints[n].X == otherRectangle.AllPoints[i].X && intersectingPoints[n].Y == otherRectangle.AllPoints[i].Y)
-                {
-                    shared = true;
-                    break;
-                }
-            }
-            if (!shared && this.IsInside(otherRectangle.AllPoints[i])) {
-                anyContainedPointsInverse = true;
-                break;
-            }
-        }
-
-        if(anyContainedPoints)
-        {
-            status = Relationship.Contained;
-            msg = this.Name + ' is contained within ' + otherRectangle.Name;
-        }
-        if (anyContainedPointsInverse) {
-            status = Relationship.Contained;
-            msg = otherRectangle.Name + ' is contained within ' + this.Name;
-        }
         return { Relationship: status, Message: msg, Intersections: intersectingPoints };
-    };
+    }
 
     /*
     Determines if the given point lies within our RectangleView
